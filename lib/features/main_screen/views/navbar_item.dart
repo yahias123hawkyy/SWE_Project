@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:iparkmobileapplication/features/available_chargers/views/available_charger.dart';
 import 'package:iparkmobileapplication/features/main_screen/views/main_screen.dart';
 import 'package:iparkmobileapplication/features/main_screen/views/notifications_page.dart';
+import 'package:iparkmobileapplication/features/profile_tab_screen/views/profile_screen.dart';
 
-class BottomNavBarItem extends StatelessWidget {
+class BottomNavBar extends StatelessWidget {
  
 
   
@@ -45,6 +46,9 @@ BottomNavigationBarItem navBarItem(String label, Icon icon) {
         } 
         if (value == 3){
           Navigator.pushNamed(context,AvailableChargers.routeName);
+        } 
+        if (value == 4){
+          Navigator.pushNamed(context,ProfileScreen.nameRoute);
         } 
 
 }

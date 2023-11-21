@@ -53,6 +53,6 @@ class MainScreenView extends StatelessWidget {
             ),
           ),
         ),
-        bottomNavigationBar: BottomNavBarItem());
+        bottomNavigationBar: BottomNavBar());
   }
 }

@@ -5,6 +5,12 @@ import 'package:iparkmobileapplication/features/available_chargers/views/availab
 import 'package:iparkmobileapplication/features/charger_screen/views/charger_screen.dart';
 import 'package:iparkmobileapplication/features/main_screen/views/main_screen.dart';
 import 'package:iparkmobileapplication/features/main_screen/views/notifications_page.dart';
+import 'package:iparkmobileapplication/features/payment_cards_screen/views/payment_cards_screen.dart';
+import 'package:iparkmobileapplication/features/payment_history_screen/views/payment_history_screen.dart';
+import 'package:iparkmobileapplication/features/profile_details_screens/views/profile_details_screen.dart';
+import 'package:iparkmobileapplication/features/profile_tab_screen/views/profile_screen.dart';
+import 'package:iparkmobileapplication/features/settings_screen/views/settings_screen.dart';
+import 'package:iparkmobileapplication/features/vehichles_screen/views/vehichles.dart';
 import 'package:iparkmobileapplication/utils/themes/app_colors.dart';
 import 'package:iparkmobileapplication/utils/themes/themes.dart';
 
@@ -25,10 +31,16 @@ class MyApp extends StatelessWidget {
       themeMode: ThemeMode.light,
       home: const MyHomePage(title: ""),
       routes: {
-        MainScreenView.routeName: (context)=> const MainScreenView(),
-        NotificationScreen.routeName: (context)=>const  NotificationScreen()
-        ,AvailableChargers.routeName: (context)=> const AvailableChargers(),
-        ChargerScreen.nameRoute: (context)=> const ChargerScreen()
+        MainScreenView.routeName: (context) => const MainScreenView(),
+        NotificationScreen.routeName: (context) => const NotificationScreen(),
+        AvailableChargers.routeName: (context) => const AvailableChargers(),
+        ChargerScreen.nameRoute: (context) => const ChargerScreen(),
+        ProfileScreen.nameRoute: (context) => const ProfileScreen(),
+        PaymentCardsScreen.nameRoute: (context) => const PaymentCardsScreen(),
+        PaymentHistoryScreen.nameRoute:(context) => const PaymentHistoryScreen(),
+        Vehichles.nameRoute:(context) => const Vehichles(),
+        ProfileDetailsScreen.nameRoute:(context) => const ProfileDetailsScreen(),
+        SettingsScreen.nameRoute:(context)=> const SettingsScreen()
       },
     );
   }
@@ -37,7 +49,6 @@ class MyApp extends StatelessWidget {
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
 
- 
   final String title;
 
   @override
@@ -49,26 +60,32 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _incrementCounter() {
     setState(() {
-      
       _counter++;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-   
     return Scaffold(
-      appBar:ApplicationBar.appbar("yahia",Icon(color: MainColors.mainLightThemeColor,Icons.arrow_back,), ()=> print("")),
+      appBar: ApplicationBar.appbar(
+          "yahia",
+          Icon(
+            color: MainColors.mainLightThemeColor,
+            Icons.arrow_back,
+          ),
+          () => print("")),
       body: Center(
-        
         child: Column(
-     
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             const Text(
               'You have pushed the button this many times:',
             ),
-            SvgPicture.asset("assets/images/adjust-svgrepo-com.svg",height: 200,width: 200,),
+            SvgPicture.asset(
+              "assets/images/adjust-svgrepo-com.svg",
+              height: 200,
+              width: 200,
+            ),
             Text(
               '$_counter',
               style: Theme.of(context).textTheme.headlineMedium,
@@ -77,7 +94,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: ()=> Navigator.pushNamed(context, MainScreenView.routeName),
+        onPressed: () => Navigator.pushNamed(context, MainScreenView.routeName),
         tooltip: 'Increment',
         child: const Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.

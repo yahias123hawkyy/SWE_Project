@@ -36,7 +36,6 @@ class ChargerCard extends StatelessWidget {
             color: MainColors.mainLightThemeColor),
         child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
-            // mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               Container(
                 child: SvgPicture.asset(
