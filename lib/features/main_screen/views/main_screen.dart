@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/utils.dart';
 import 'package:iparkmobileapplication/features/main_screen/views/navbar_item.dart';
 import 'package:iparkmobileapplication/utils/themes/app_colors.dart';
+import 'package:get/get.dart';
 
 class MainScreenView extends StatelessWidget {
   const MainScreenView({super.key});
@@ -29,14 +31,14 @@ class MainScreenView extends StatelessWidget {
                   child: Container(
                     width: _page_size.width * 0.7,
                     child: TextFormField(
-                      decoration: const InputDecoration(
+                      decoration:  InputDecoration(
                         focusedBorder: InputBorder.none,
                         enabledBorder: InputBorder.none,
                         fillColor: Colors.white,
                         prefixIcon: Icon(Icons.search),
                         border: UnderlineInputBorder(
                             borderRadius: BorderRadius.all(Radius.circular(60))),
-                        labelText: 'Search',
+                        labelText: "search".tr
                       ),
                     ),
                   ),

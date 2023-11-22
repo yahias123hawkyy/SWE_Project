@@ -12,12 +12,17 @@ class ChargerCard extends StatelessWidget {
   final costPerUnit;
   final id;
 
+
+  final Color flashColor;
+  final Color cardColor;
+  final TextStyle textStyle;
+
   const ChargerCard(
       {super.key,
       required this.id,
       required this.chargerName,
       required this.costPerUnit,
-      required this.status});
+      required this.status, required this.flashColor, required this.cardColor, required this.textStyle});
 
   
 
@@ -32,16 +37,17 @@ class ChargerCard extends StatelessWidget {
         margin: EdgeInsets.symmetric(
             horizontal: mediaQuery.width * 0.05, vertical: 20),
         decoration: BoxDecoration(
+          border: Border.all(width: 0.2),
             borderRadius: BorderRadius.all(Radius.circular(20)),
-            color: MainColors.mainLightThemeColor),
+            color: cardColor),
         child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
                 child: SvgPicture.asset(
                   "assets/images/electricity-svgrepo-com.svg",
-                  colorFilter: ColorFilter.mode(
-                      MainColors.backgroundColor, BlendMode.srcIn),
+                  colorFilter: ColorFilter.mode( 
+                     flashColor, BlendMode.srcIn),
                 ),
                 height: mediaQuery.height*0.15,
                 width: mediaQuery.width*0.25,
@@ -54,29 +60,29 @@ class ChargerCard extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text("Status:", style: chargerCardtextStyle),
+                        Text("Status:", style: textStyle),
                         SizedBox(
                           width: mediaQuery.width * 0.09,
                         ),
-                        Text(status, style: chargerCardtextStyle)
+                        Text(status, style: textStyle)
                       ],
                     ),
                     Row(
                       children: [
-                        Text("Name:", style: chargerCardtextStyle),
+                        Text("Name:", style: textStyle),
                         SizedBox(
                           width: mediaQuery.width * 0.1,
                         ),
-                        Text(chargerName, style: chargerCardtextStyle)
+                        Text(chargerName, style: textStyle)
                       ],
                     ),
                     Row(
                       children: [
-                        Text("Cost/Unit:", style: chargerCardtextStyle),
+                        Text("Cost/Unit:", style: textStyle),
                         SizedBox(
                           width: mediaQuery.width * 0.02,
                         ),
-                        Text(costPerUnit+ " cnt/kwt", style: chargerCardtextStyle)
+                        Text(costPerUnit+ " cnt/kwt", style: textStyle)
                       ],
                     )
                   ],
@@ -88,10 +94,8 @@ class ChargerCard extends StatelessWidget {
   }
 }
 
-TextStyle chargerCardtextStyle = TextStyle(
-    color: MainColors.chargerCardTextColor,
-    fontSize: 18,
-    fontWeight: FontWeight.bold);
+
+
 
 
 handler(int id,context,String chagerName){

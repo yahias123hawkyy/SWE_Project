@@ -27,8 +27,8 @@ class DummyCharger {
 
  static List  dummyChargers=[
  ChargerModel(id: 1,available: false,chargerName: "Charger 1", costPerUnit: 23),
- ChargerModel(id: 2,available: false,chargerName: "Charger 2", costPerUnit: 23),
- ChargerModel(id: 3,available: false,chargerName: "Charger 3", costPerUnit: 23),
+ ChargerModel(id: 2,available: true,chargerName: "Charger 2", costPerUnit: 23),
+ ChargerModel(id: 3,available: true,chargerName: "Charger 3", costPerUnit: 23),
  ChargerModel(id: 4,available: false,chargerName: "Charger 4", costPerUnit: 23),
 ];
 

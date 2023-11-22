@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:iparkmobileapplication/common/widgets/app_bar.dart';
 import 'package:iparkmobileapplication/features/available_chargers/views/available_charger.dart';
 import 'package:iparkmobileapplication/features/charger_screen/views/charger_screen.dart';
@@ -11,11 +14,13 @@ import 'package:iparkmobileapplication/features/profile_details_screens/views/pr
 import 'package:iparkmobileapplication/features/profile_tab_screen/views/profile_screen.dart';
 import 'package:iparkmobileapplication/features/settings_screen/views/settings_screen.dart';
 import 'package:iparkmobileapplication/features/vehichles_screen/views/vehichles.dart';
+import 'package:iparkmobileapplication/localisations/translations/app_translation.dart';
 import 'package:iparkmobileapplication/utils/themes/app_colors.dart';
 import 'package:iparkmobileapplication/utils/themes/themes.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  await GetStorage.init();
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -23,9 +28,11 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       title: 'Ipark EV',
+      locale: Locale('fi', 'FI'),
       debugShowCheckedModeBanner: false,
+      translations: AppTranslations(),
       theme: AvailableThemes.lightTheme,
       darkTheme: AvailableThemes.darkTheme,
       themeMode: ThemeMode.light,
@@ -37,10 +44,12 @@ class MyApp extends StatelessWidget {
         ChargerScreen.nameRoute: (context) => const ChargerScreen(),
         ProfileScreen.nameRoute: (context) => const ProfileScreen(),
         PaymentCardsScreen.nameRoute: (context) => const PaymentCardsScreen(),
-        PaymentHistoryScreen.nameRoute:(context) => const PaymentHistoryScreen(),
-        Vehichles.nameRoute:(context) => const Vehichles(),
-        ProfileDetailsScreen.nameRoute:(context) => const ProfileDetailsScreen(),
-        SettingsScreen.nameRoute:(context)=> const SettingsScreen()
+        PaymentHistoryScreen.nameRoute: (context) =>
+            const PaymentHistoryScreen(),
+        Vehichles.nameRoute: (context) => const Vehichles(),
+        ProfileDetailsScreen.nameRoute: (context) =>
+            const ProfileDetailsScreen(),
+        SettingsScreen.nameRoute: (context) => const SettingsScreen()
       },
     );
   }
