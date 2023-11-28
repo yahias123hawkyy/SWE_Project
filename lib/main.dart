@@ -8,13 +8,16 @@ import 'package:iparkmobileapplication/features/available_chargers/views/availab
 import 'package:iparkmobileapplication/features/charger_screen/views/charger_screen.dart';
 import 'package:iparkmobileapplication/features/main_screen/views/main_screen.dart';
 import 'package:iparkmobileapplication/features/main_screen/views/notifications_page.dart';
+import 'package:iparkmobileapplication/features/onboarding_screen/views/onborading_screen.dart';
 import 'package:iparkmobileapplication/features/payment_cards_screen/views/payment_cards_screen.dart';
 import 'package:iparkmobileapplication/features/payment_history_screen/views/payment_history_screen.dart';
 import 'package:iparkmobileapplication/features/profile_details_screens/views/profile_details_screen.dart';
 import 'package:iparkmobileapplication/features/profile_tab_screen/views/profile_screen.dart';
 import 'package:iparkmobileapplication/features/settings_screen/views/settings_screen.dart';
+import 'package:iparkmobileapplication/features/sign_in/sign_in_screen.dart';
 import 'package:iparkmobileapplication/features/vehichles_screen/views/vehichles.dart';
 import 'package:iparkmobileapplication/localisations/translations/app_translation.dart';
+import 'package:iparkmobileapplication/testttt.dart';
 import 'package:iparkmobileapplication/utils/themes/app_colors.dart';
 import 'package:iparkmobileapplication/utils/themes/themes.dart';
 
@@ -36,8 +39,10 @@ class MyApp extends StatelessWidget {
       theme: AvailableThemes.lightTheme,
       darkTheme: AvailableThemes.darkTheme,
       themeMode: ThemeMode.light,
-      home: const MyHomePage(title: ""),
+      home: const SignInScreen(),
       routes: {
+        SignInScreen.nameRoute:(context) => const SignInScreen(),
+        OnBoardingScreen.nameRoute:(context) => const OnBoardingScreen(),
         MainScreenView.routeName: (context) => const MainScreenView(),
         NotificationScreen.routeName: (context) => const NotificationScreen(),
         AvailableChargers.routeName: (context) => const AvailableChargers(),
@@ -69,7 +74,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _incrementCounter() {
     setState(() {
-      _counter++;
+      _counter++; 
     });
   }
 

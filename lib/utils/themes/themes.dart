@@ -15,6 +15,9 @@ static ThemeData lightTheme = ThemeData(
  ) ,
  brightness: Brightness.light,
  primaryColor: MainColors.mainLightThemeColor,
+ primaryTextTheme:TextTheme(
+  
+ ) ,
  appBarTheme: const AppBarTheme(titleTextStyle: TextStyle(
   color: Color(0xFF1B434D),
   fontSize: 17
