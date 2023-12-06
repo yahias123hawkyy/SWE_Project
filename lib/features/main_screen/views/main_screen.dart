@@ -84,11 +84,4 @@ BoxDecoration boxContainerDecorationSearchBar = const BoxDecoration(
   color: Colors.white,
 );
 
-// InputDecoration inputDecorationforSearchBar = InputDecoration(
-//     focusedBorder: InputBorder.none,
-//     enabledBorder: InputBorder.none,
-//     fillColor: Colors.white,
-//     prefixIcon: Icon(Icons.search),
-//     border: UnderlineInputBorder(
-//         borderRadius: BorderRadius.all(Radius.circular(60))),
-//     labelText: "hello".tr);
+

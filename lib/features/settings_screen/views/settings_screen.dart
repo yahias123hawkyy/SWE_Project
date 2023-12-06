@@ -5,9 +5,9 @@ import 'package:iparkmobileapplication/common/widgets/app_bar.dart';
 import 'package:iparkmobileapplication/common/widgets/profile_card.dart';
 import 'package:iparkmobileapplication/utils/themes/app_colors.dart';
 import 'package:provider/provider.dart';
-import 'package:iparkmobileapplication/features/settings_screen/providers/localizationservice.dart';
+import 'package:iparkmobileapplication/localisations/localizationservice.dart';
 
-import '../providers/localizationservice.dart';
+import '../../../localisations/localizationservice.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -19,7 +19,7 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-  bool? cosa;
+  bool? onOfButtonflag;
 
   void initState() {
     super.initState();
@@ -27,11 +27,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   Future<void> _asyncSetup() async {
-      bool newCosa =  await Get.find<LocalizationService>().initLocale();
+      bool _onOfButtonflag =  await Get.find<LocalizationService>().initLocale();
 
     setState(()  {
-      cosa =newCosa;
-      print(cosa);
+      onOfButtonflag =_onOfButtonflag;
     });
     
   }
@@ -80,11 +79,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                               borderRadius:
                                   BorderRadius.all(Radius.circular(2.0)),
                             ),
-                            backgroundColor: cosa == false
+                            backgroundColor: onOfButtonflag == false
                                 ? MainColors.mainLightThemeColor
                                 : Colors.white),
                         onPressed: () async {
-                          cosa = await Get.find<LocalizationService>()
+                          onOfButtonflag = await Get.find<LocalizationService>()
                               .setLocale('en', false);
                           ;
                   
@@ -92,7 +91,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         child: Text(
                           "EN",
                           style: TextStyle(
-                              color: cosa == false
+                              color: onOfButtonflag == false
                                   ? Colors.white
                                   : MainColors.mainLightThemeColor),
                         )),
@@ -105,20 +104,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
                               borderRadius:
                                   BorderRadius.all(Radius.circular(2.0)),
                             ),
-                            backgroundColor: cosa == true
+                            backgroundColor: onOfButtonflag == true
                                 ? MainColors.mainLightThemeColor
                                 : Colors.white),
                         onPressed: () async {
-                          bool newCosa = await Get.find<LocalizationService>()
+                          onOfButtonflag= await Get.find<LocalizationService>()
                               .setLocale('fi', true);
-                          setState(() {
-                            cosa = newCosa;
-                          });
+                          
                         },
                         child: Text(
                           "FI",
                           style: TextStyle(
-                              color: cosa == true
+                              color: onOfButtonflag == true
                                   ? Colors.white
                                   : MainColors.mainLightThemeColor),
                         )),

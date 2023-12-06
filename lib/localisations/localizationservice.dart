@@ -6,7 +6,6 @@ import 'package:get_storage/get_storage.dart';
 class LocalizationService extends GetxService {
   final _locale = 'en'.obs;
   bool _onOfButton =false;
-   // Default locale is English
 
   String get locale => _locale.value;
   bool get onofbuttonGetter =>_onOfButton;

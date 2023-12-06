@@ -12,10 +12,11 @@ import 'package:iparkmobileapplication/features/onboarding_screen/views/onboradi
 import 'package:iparkmobileapplication/features/payment_cards_screen/provider/payment_card_provider.dart';
 import 'package:iparkmobileapplication/features/payment_cards_screen/views/payment_cards_screen.dart';
 import 'package:iparkmobileapplication/features/payment_history_screen/views/payment_history_screen.dart';
+import 'package:iparkmobileapplication/features/profile_details_screens/providers/image_picker_provider.dart';
 import 'package:iparkmobileapplication/features/profile_details_screens/views/profile_details_screen.dart';
 import 'package:iparkmobileapplication/features/profile_tab_screen/views/profile_screen.dart';
 import 'package:iparkmobileapplication/features/qr_scanner/qr_scanner_view.dart';
-import 'package:iparkmobileapplication/features/settings_screen/providers/localizationservice.dart';
+import 'package:iparkmobileapplication/localisations/localizationservice.dart';
 import 'package:iparkmobileapplication/features/settings_screen/views/settings_screen.dart';
 import 'package:iparkmobileapplication/features/sign_in/sign_in_screen.dart';
 import 'package:iparkmobileapplication/features/sign_in/sign_up_screen.dart';
@@ -31,7 +32,7 @@ void main() async {
  
     await GetStorage.init();
 
-    
+
     final localizationService = await Get.putAsync(() async {
     final service = LocalizationService();
     await service.initLocale();
@@ -49,6 +50,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
         providers: [
           ChangeNotifierProvider(create: (_) => PaymentCardsProvider()),
+          ChangeNotifierProvider(create: (_) =>ImagePickerProvider())
         ],
         child: GetMaterialApp(
           title: 'Ipark EV',

@@ -40,55 +40,60 @@ class ChargerCard extends StatelessWidget {
           border: Border.all(width: 0.2),
             borderRadius: BorderRadius.all(Radius.circular(20)),
             color: cardColor),
-        child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                child: SvgPicture.asset(
-                  "assets/images/electricity-svgrepo-com.svg",
-                  colorFilter: ColorFilter.mode( 
-                     flashColor, BlendMode.srcIn),
+        child: SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  child: SvgPicture.asset(
+                    "assets/images/electricity-svgrepo-com.svg",
+                    colorFilter: ColorFilter.mode( 
+                       flashColor, BlendMode.srcIn),
+                  ),
+                  height: mediaQuery.height*0.15,
+                  width: mediaQuery.width*0.25,
                 ),
-                height: mediaQuery.height*0.15,
-                width: mediaQuery.width*0.25,
-              ),
-              Container(
-                margin: EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                Container(
+                  margin: EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text("Status:", style: textStyle),
-                        SizedBox(
-                          width: mediaQuery.width * 0.09,
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text("Status:", style: textStyle),
+                            SizedBox(
+                              width: mediaQuery.width * 0.09,
+                            ),
+                            Text(status, style: textStyle)
+                          ],
                         ),
-                        Text(status, style: textStyle)
+                        Row(
+                          children: [
+                            Text("Name:", style: textStyle),
+                            SizedBox(
+                              width: mediaQuery.width * 0.1,
+                            ),
+                            Text(chargerName, style: textStyle)
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Text("Cost/Unit:", style: textStyle),
+                            SizedBox(
+                              width: mediaQuery.width * 0.02,
+                            ),
+                            Text(costPerUnit+ " cnt/kwt", style: textStyle)
+                          ],
+                        )
                       ],
                     ),
-                    Row(
-                      children: [
-                        Text("Name:", style: textStyle),
-                        SizedBox(
-                          width: mediaQuery.width * 0.1,
-                        ),
-                        Text(chargerName, style: textStyle)
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Text("Cost/Unit:", style: textStyle),
-                        SizedBox(
-                          width: mediaQuery.width * 0.02,
-                        ),
-                        Text(costPerUnit+ " cnt/kwt", style: textStyle)
-                      ],
-                    )
-                  ],
-                ),
-              )
-            ]),
+                  ),
+                )
+              ]),
+        ),
       ),
     );
   }
