@@ -3,6 +3,7 @@ import 'package:iparkmobileapplication/features/available_chargers/views/availab
 import 'package:iparkmobileapplication/features/main_screen/views/main_screen.dart';
 import 'package:iparkmobileapplication/features/main_screen/views/notifications_page.dart';
 import 'package:iparkmobileapplication/features/profile_tab_screen/views/profile_screen.dart';
+import 'package:iparkmobileapplication/features/qr_scanner/qr_scanner_view.dart';
 
 class BottomNavBar extends StatelessWidget {
  
@@ -42,7 +43,7 @@ BottomNavigationBarItem navBarItem(String label, Icon icon) {
           Navigator.pushNamed(context,NotificationScreen.routeName);
         }  
         if (value == 2){
-          Navigator.pushNamed(context,MainScreenView.routeName);
+          Navigator.pushNamed(context,QRCodeScannerScreen.nameRoute);
         } 
         if (value == 3){
           Navigator.pushNamed(context,AvailableChargers.routeName);

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/utils.dart';
 import 'package:iparkmobileapplication/common/widgets/app_bar.dart';
+import 'package:iparkmobileapplication/features/payment_cards_screen/views/payment_cards_screen.dart';
 import 'package:iparkmobileapplication/features/payment_history_screen/views/payment_history_screen.dart';
 import 'package:iparkmobileapplication/features/profile_details_screens/views/profile_details_screen.dart';
 import 'package:iparkmobileapplication/common/widgets/profile_card.dart';
@@ -37,7 +38,7 @@ class ProfileScreen extends StatelessWidget {
             ),
             ProfileCard(
               onTap:()=>
-                  Navigator.pushNamed(context, PaymentHistoryScreen.nameRoute,arguments: {"title":"Payments Cards"}),
+                  Navigator.pushNamed(context, PaymentCardsScreen.nameRoute,arguments: {"title":"Payments Cards"}),
               trailingicon: Icon(Icons.arrow_forward_ios),
               title: "payment cards".tr,
               leadingicon: Icon(Icons.person),

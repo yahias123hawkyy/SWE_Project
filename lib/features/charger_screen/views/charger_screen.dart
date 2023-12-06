@@ -43,78 +43,80 @@ class ChargerScreen extends StatelessWidget {
                   borderRadius: BorderRadius.all(Radius.circular(16))),
               height: mediaQuery.height * 0.3,
               width: mediaQuery.width * 0.7,
-              child: Column(
-                children: [
-                  Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "Energy",
-                          style: testStyleHandler(context, mediaQuery),
-                        ),
-                        Text(
-                          args["list"][0].energy.toString() +" kwt",
-                          style: testStyleHandler(context, mediaQuery),
-                        )
-                      ]),
-                  const Divider(
-                    color: Colors.black,
-                    height: 20,
-                    thickness: 0.6,
-                    indent: 5,
-                    endIndent: 5,
-                  ),
-                  Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "Time",
-                          style: testStyleHandler(context, mediaQuery),
-                        ),
-                        Text(
-                          args["list"][0].time.toString().substring(17, 22),
-                          style: testStyleHandler(context, mediaQuery),
-                        )
-                      ]),
-                       const Divider(
-                    color: Colors.black,
-                    height: 20,
-                    thickness: 0.6,
-                    indent: 5,
-                    endIndent: 5,
-                  ),
-                  Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "Total",
-                          style: testStyleHandler(context, mediaQuery),
-                        ),
-                        Text(
-                          args["list"][0].costpertime.toString() + "\$",
-                          style: testStyleHandler(context, mediaQuery),
-                        )
-                      ]),
-                       const Divider(
-                    color: Colors.black,
-                    height: 20,
-                    thickness: 0.6,
-                    indent: 5,
-                    endIndent: 5,
-                  ),
-                  Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "Battery",
-                          style: testStyleHandler(context, mediaQuery),
-                        ),
-                        Text(
-                          args["list"][0].battery.toString() +"%",
-                          style: testStyleHandler(context, mediaQuery),
-                        )
-                      ]),
-                ],
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Energy",
+                            style: testStyleHandler(context, mediaQuery),
+                          ),
+                          Text(
+                            args["list"][0].energy.toString() +" kwt",
+                            style: testStyleHandler(context, mediaQuery),
+                          )
+                        ]),
+                    const Divider(
+                      color: Colors.black,
+                      height: 20,
+                      thickness: 0.6,
+                      indent: 5,
+                      endIndent: 5,
+                    ),
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Time",
+                            style: testStyleHandler(context, mediaQuery),
+                          ),
+                          Text(
+                            args["list"][0].time.toString().substring(17, 22),
+                            style: testStyleHandler(context, mediaQuery),
+                          )
+                        ]),
+                         const Divider(
+                      color: Colors.black,
+                      height: 20,
+                      thickness: 0.6,
+                      indent: 5,
+                      endIndent: 5,
+                    ),
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Total",
+                            style: testStyleHandler(context, mediaQuery),
+                          ),
+                          Text(
+                            args["list"][0].costpertime.toString() + "\$",
+                            style: testStyleHandler(context, mediaQuery),
+                          )
+                        ]),
+                         const Divider(
+                      color: Colors.black,
+                      height: 20,
+                      thickness: 0.6,
+                      indent: 5,
+                      endIndent: 5,
+                    ),
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Battery",
+                            style: testStyleHandler(context, mediaQuery),
+                          ),
+                          Text(
+                            args["list"][0].battery.toString() +"%",
+                            style: testStyleHandler(context, mediaQuery),
+                          )
+                        ]),
+                  ],
+                ),
               ),
             )
           ],

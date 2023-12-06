@@ -18,21 +18,13 @@ class MainScreenView extends StatefulWidget {
 }
 
 class _MainScreenViewState extends State<MainScreenView> {
-
-
   final Completer<GoogleMapController> _controller =
       Completer<GoogleMapController>();
 
   static const CameraPosition _kGooglePlex = CameraPosition(
-    target: LatLng(37.42796133580664, -122.085749655962),
+    target: LatLng(60.192059, 24.945831),
     zoom: 14.4746,
   );
-
-  static const CameraPosition _kLake = CameraPosition(
-      bearing: 192.8334901395799,
-      target: LatLng(37.43296265331129, -122.08832357078792),
-      tilt: 59.440717697143555,
-      zoom: 19.151926040649414);
 
   @override
   Widget build(BuildContext context) {
@@ -40,23 +32,17 @@ class _MainScreenViewState extends State<MainScreenView> {
 
     return Scaffold(
         backgroundColor: MainColors.backgroundColor,
-        // appBar: SafeArea(),
-        body: Stack(
-          children: [
-             GoogleMap(
-        mapType: MapType.normal,
-        initialCameraPosition: _kGooglePlex,
-        onMapCreated: (GoogleMapController controller) {
-          _controller.complete(controller);
-        },
-      ),
-            
-            SafeArea(
+        body: Stack(children: [
+          GoogleMap(
+            mapType: MapType.normal,
+            initialCameraPosition: _kGooglePlex,
+            onMapCreated: (GoogleMapController controller) {
+              _controller.complete(controller);
+            },
+          ),
+          SafeArea(
             child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(25)),
-              color:Colors.white ,
-              ),
+              decoration: boxContainerDecorationSearchBar,
               margin: EdgeInsets.all(_page_size.height * 0.02),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -64,31 +50,45 @@ class _MainScreenViewState extends State<MainScreenView> {
                   Container(
                     width: _page_size.width * 0.7,
                     child: TextFormField(
-                      decoration:  InputDecoration(
-                        focusedBorder: InputBorder.none,
-                        enabledBorder: InputBorder.none,
-                        fillColor: Colors.white,
-                        prefixIcon: Icon(Icons.search),
-                        border: UnderlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(60))),
-                        labelText: "search".tr
-                      ),
-                    ),
+                        decoration: InputDecoration(
+                            focusedBorder: InputBorder.none,
+                            enabledBorder: InputBorder.none,
+                            fillColor: Colors.white,
+                            prefixIcon: Icon(Icons.search),
+                            border: UnderlineInputBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(60))),
+                            labelText: "search".tr)),
                   ),
                   Container(
-                     margin: EdgeInsets.symmetric(horizontal:_page_size.width *0.02),
+                      margin: EdgeInsets.symmetric(
+                          horizontal: _page_size.width * 0.02),
                       child: SvgPicture.asset(
-                      colorFilter: ColorFilter.mode(MainColors.mainLightThemeColor, BlendMode.srcIn),
-                    "assets/images/adjust-svgrepo-com.svg",
-                    height: _page_size.width * 0.1,
-                    width: 200,
-                  ))
+                        colorFilter: ColorFilter.mode(
+                            MainColors.mainLightThemeColor, BlendMode.srcIn),
+                        "assets/images/adjust-svgrepo-com.svg",
+                        height: _page_size.width * 0.1,
+                        width: 200,
+                      ))
                 ],
               ),
             ),
-          ),]
-        ),
-        bottomNavigationBar: BottomNavBar()
-        );
+          ),
+        ]),
+        bottomNavigationBar: BottomNavBar());
   }
 }
+
+BoxDecoration boxContainerDecorationSearchBar = const BoxDecoration(
+  borderRadius: BorderRadius.all(Radius.circular(25)),
+  color: Colors.white,
+);
+
+// InputDecoration inputDecorationforSearchBar = InputDecoration(
+//     focusedBorder: InputBorder.none,
+//     enabledBorder: InputBorder.none,
+//     fillColor: Colors.white,
+//     prefixIcon: Icon(Icons.search),
+//     border: UnderlineInputBorder(
+//         borderRadius: BorderRadius.all(Radius.circular(60))),
+//     labelText: "hello".tr);
