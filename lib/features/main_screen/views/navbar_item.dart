@@ -14,17 +14,15 @@ class BottomNavBar extends StatelessWidget {
 
     final double page_size = MediaQuery.of(context).size.height;
 
-    return Expanded(
-      child: BottomNavigationBar(
-        onTap: (value)=> shiftpage(value,context) ,
-        selectedItemColor: Theme.of(context).primaryColor,items:  <BottomNavigationBarItem>[
-        navBarItem("", Icon(size:page_size * 0.04,Icons.home)),
-        navBarItem("", Icon(size:page_size * 0.04,Icons.calendar_today_sharp)),
-        navBarItem("", Icon(size:page_size * 0.04,Icons.qr_code)),
-        navBarItem("", Icon(size:page_size * 0.04,Icons.local_gas_station))
-      , navBarItem("", Icon(size:page_size * 0.04,Icons.person))
-      ],type:BottomNavigationBarType.fixed,),
-    );
+    return BottomNavigationBar(
+      onTap: (value)=> shiftpage(value,context) ,
+      selectedItemColor: Theme.of(context).primaryColor,items:  <BottomNavigationBarItem>[
+      navBarItem("", Icon(size:page_size * 0.04,Icons.home)),
+      navBarItem("", Icon(size:page_size * 0.04,Icons.calendar_today_sharp)),
+      navBarItem("", Icon(size:page_size * 0.04,Icons.qr_code)),
+      navBarItem("", Icon(size:page_size * 0.04,Icons.local_gas_station))
+    , navBarItem("", Icon(size:page_size * 0.04,Icons.person))
+    ],type:BottomNavigationBarType.fixed,);
   }
 }
 BottomNavigationBarItem navBarItem(String label, Icon icon) {

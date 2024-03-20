@@ -1,4 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+<uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:label="iparkmobileapplication"
         android:name="${applicationName}"
@@ -30,6 +33,6 @@
             android:name="flutterEmbedding"
             android:value="2" />
         <meta-data android:name="com.google.android.geo.API_KEY"
-               android:value="AIzaSyAFq5U8y1vMsozsdvmGhzmlmeV3AdXJfsY"/>
+               android:value="AIzaSyA1h5We9tSldQfixqBRvLisI3PYqz3kfvo"/>
     </application>
 </manifest>

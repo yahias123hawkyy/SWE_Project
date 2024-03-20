@@ -44,6 +44,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   provider: ^6.1.1
   qr_code_scanner: ^1.0.1
+  dio: ^5.4.1
 
 dev_dependencies:
   flutter_test:

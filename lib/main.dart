@@ -5,6 +5,7 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:iparkmobileapplication/common/widgets/app_bar.dart';
 import 'package:iparkmobileapplication/features/available_chargers/views/available_charger.dart';
+import 'package:iparkmobileapplication/features/available_chargers/views/test_available_chargers.dart';
 import 'package:iparkmobileapplication/features/charger_screen/views/charger_screen.dart';
 import 'package:iparkmobileapplication/features/main_screen/views/main_screen.dart';
 import 'package:iparkmobileapplication/features/main_screen/views/notifications_page.dart';
@@ -62,6 +63,7 @@ class MyApp extends StatelessWidget {
           themeMode: ThemeMode.light,
           home: const MainScreenView(),
           routes: {
+            TestAvailableChargers.routeName:  (context) => TestAvailableChargers(),
             QRCodeScannerScreen.nameRoute: (context) => QRCodeScannerScreen(),
             SignUpScren.nameRoute: (context) => const SignUpScren(),
             SignInScreen.nameRoute: (context) => const SignInScreen(),
