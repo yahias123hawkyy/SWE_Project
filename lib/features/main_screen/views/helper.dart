@@ -2,9 +2,9 @@ import 'package:dio/dio.dart';
 
 class MainScreenHelper{
 
+  Dio dio = Dio();
 
   Future<List<dynamic>> fetchApiData(String url) async {
-  Dio dio = Dio();
   try {
     Response response = await dio.get(url);
     if (response.statusCode == 200) {
@@ -12,7 +12,6 @@ class MainScreenHelper{
       print(response.data);
       return response.data;
     } else {
-      // Handle non-200 responses
       throw Exception('Failed to load data: HTTP ${response.statusCode}');
     }
   } catch (e) {
@@ -20,4 +19,14 @@ class MainScreenHelper{
     throw Exception('Failed to load data');
   }
 }
+
+
+Future<List<dynamic>> fetchStations(String query) async {
+    try {
+      final response = await dio.get('http://10.0.2.2:3000/api/stations/search', queryParameters: {'q': query});
+      return response.data;
+    } catch (e) {
+      return [];
+    }
+  }
 }

@@ -23,9 +23,7 @@ class MainScreenView extends StatefulWidget {
 }
 
 class _MainScreenViewState extends State<MainScreenView> {
-  
-
-  GoogleMapController? _controller;
+  Completer<GoogleMapController> _controller = Completer();
 
   final LatLng _userLocation = const LatLng(45.592775, 9.294368);
   final LatLng _destinationLocation =
@@ -55,6 +53,23 @@ class _MainScreenViewState extends State<MainScreenView> {
     }
   }
 
+  List<dynamic> _searchResults = [];
+
+  void _onSearchChanged(String query) async {
+    MainScreenHelper helper = MainScreenHelper();
+
+    if (query.isNotEmpty) {
+      final results = await helper.fetchStations(query);
+      setState(() {
+        _searchResults = results;
+      });
+    } else {
+      setState(() {
+        _searchResults = [];
+      });
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -66,90 +81,89 @@ class _MainScreenViewState extends State<MainScreenView> {
   //   _simulateUserMovement();
   // }
 
- 
   void _onMapCreated(GoogleMapController controller) {
-    _controller = controller;
+    _controller.complete(controller); // Correct usage
   }
 
-  void _simulateMovement() {
-    const step = 0.0001;
-    int steps = 100; 
+  // void _simulateMovement() {
+  //   const step = 0.0001;
+  //   int steps = 100;
 
-    LatLng currentPosition = _userLocation;
-    Timer.periodic(const Duration(milliseconds: 100), (Timer timer) {
-      setState(() {
-        double lat = currentPosition.latitude +
-            ((_destinationLocation.latitude - _userLocation.latitude) / steps);
-        double lng = currentPosition.longitude +
-            ((_destinationLocation.longitude - _userLocation.longitude) /
-                steps);
-        currentPosition = LatLng(lat, lng);
+  //   LatLng currentPosition = _userLocation;
+  //   Timer.periodic(const Duration(milliseconds: 100), (Timer timer) {
+  //     setState(() {
+  //       double lat = currentPosition.latitude +
+  //           ((_destinationLocation.latitude - _userLocation.latitude) / steps);
+  //       double lng = currentPosition.longitude +
+  //           ((_destinationLocation.longitude - _userLocation.longitude) /
+  //               steps);
+  //       currentPosition = LatLng(lat, lng);
 
-        // Update the marker position
-        _markers.removeWhere((m) => m.markerId.value == 'user_location');
-        _markers.add(Marker(
-          markerId: const MarkerId("user_location"),
-          position: currentPosition,
-          infoWindow: const InfoWindow(title: "Your Location"),
-        ));
+  //       // Update the marker position
+  //       _markers.removeWhere((m) => m.markerId.value == 'user_location');
+  //       _markers.add(Marker(
+  //         markerId: const MarkerId("user_location"),
+  //         position: currentPosition,
+  //         infoWindow: const InfoWindow(title: "Your Location"),
+  //       ));
 
-        if ((currentPosition.latitude - _destinationLocation.latitude).abs() <
-                step &&
-            (currentPosition.longitude - _destinationLocation.longitude).abs() <
-                step) {
-          timer.cancel(); // Stop the timer when the destination is reached
-        }
-      });
-    });
-  }
+  //       if ((currentPosition.latitude - _destinationLocation.latitude).abs() <
+  //               step &&
+  //           (currentPosition.longitude - _destinationLocation.longitude).abs() <
+  //               step) {
+  //         timer.cancel(); // Stop the timer when the destination is reached
+  //       }
+  //     });
+  //   });
+  // }
 
-  void _createRoute() {
-    setState(() {
-      // Clear existing markers and polylines
-      _markers.clear();
-      _polylines.clear();
+  // void _createRoute() {
+  //   setState(() {
+  //     // Clear existing markers and polylines
+  //     _markers.clear();
+  //     _polylines.clear();
 
-      // Add markers for user and destination
-      _markers.add(Marker(
-        markerId: const MarkerId("user_location"),
-        position: _userLocation,
-        infoWindow: const InfoWindow(title: "Your Location"),
-      ));
-      _markers.add(Marker(
-        markerId: const MarkerId("destination_location"),
-        position: _destinationLocation,
-        infoWindow: const InfoWindow(title: "Destination"),
-      ));
+  //     // Add markers for user and destination
+  //     _markers.add(Marker(
+  //       markerId: const MarkerId("user_location"),
+  //       position: _userLocation,
+  //       infoWindow: const InfoWindow(title: "Your Location"),
+  //     ));
+  //     _markers.add(Marker(
+  //       markerId: const MarkerId("destination_location"),
+  //       position: _destinationLocation,
+  //       infoWindow: const InfoWindow(title: "Destination"),
+  //     ));
 
-      // Create a polyline between user and destination
-      _polylines.add(Polyline(
-        polylineId: const PolylineId("route"),
-        points: [_userLocation, _destinationLocation],
-        color: Colors.blue,
-        width: 5,
-      ));
+  //     // Create a polyline between user and destination
+  //     _polylines.add(Polyline(
+  //       polylineId: const PolylineId("route"),
+  //       points: [_userLocation, _destinationLocation],
+  //       color: Colors.blue,
+  //       width: 5,
+  //     ));
 
-      _simulateMovement();
+  //     _simulateMovement();
 
-      // _fitRoute();
-    });
-  }
+  //     // _fitRoute();
+  //   });
+  // }
 
-  void _fitRoute() {
-    LatLngBounds bounds;
-    if (_userLocation.latitude > _destinationLocation.latitude &&
-        _userLocation.longitude > _destinationLocation.longitude) {
-      bounds = LatLngBounds(
-          southwest: _destinationLocation, northeast: _userLocation);
-    } else {
-      bounds = LatLngBounds(
-          southwest: _userLocation, northeast: _destinationLocation);
-    }
+  // void _fitRoute() {
+  //   LatLngBounds bounds;
+  //   if (_userLocation.latitude > _destinationLocation.latitude &&
+  //       _userLocation.longitude > _destinationLocation.longitude) {
+  //     bounds = LatLngBounds(
+  //         southwest: _destinationLocation, northeast: _userLocation);
+  //   } else {
+  //     bounds = LatLngBounds(
+  //         southwest: _userLocation, northeast: _destinationLocation);
+  //   }
 
-    CameraUpdate cameraUpdate = CameraUpdate.newLatLngBounds(bounds, 50);
+  //   CameraUpdate cameraUpdate = CameraUpdate.newLatLngBounds(bounds, 50);
 
-    _controller?.animateCamera(cameraUpdate);
-  }
+  //   _controller?.animateCamera(cameraUpdate);
+  // }
 
   @override
   void dispose() {
@@ -158,8 +172,6 @@ class _MainScreenViewState extends State<MainScreenView> {
   }
 
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-
- 
 
   @override
   Widget build(BuildContext context) {
@@ -189,7 +201,8 @@ class _MainScreenViewState extends State<MainScreenView> {
                   Container(
                     width: _page_size.width * 0.7,
                     child: TextField(
-                        // controller: _searchController,
+                        onChanged: _onSearchChanged,
+                        // controller: _onSearchChanged,
                         // onSubmitted: (value) => _searchAndNavigate(),
                         decoration: InputDecoration(
                             focusedBorder: InputBorder.none,
@@ -217,6 +230,41 @@ class _MainScreenViewState extends State<MainScreenView> {
           ),
         ),
         Positioned(
+          child: Expanded(
+            child: Container(
+              child: _searchResults.isNotEmpty
+                  ? Container(
+                      color: Colors.white,
+                      margin: const EdgeInsets.symmetric(
+                          vertical: 100, horizontal: 20),
+                      height: _page_size.height * 0.3,
+                      padding: const EdgeInsets.symmetric(vertical: 30),
+                      child: ListView.builder(
+                        itemCount: _searchResults.length,
+                        itemBuilder: (context, index) {
+                          final station = _searchResults[index];
+                          return GestureDetector(
+                            onTap: (){
+                              setState(() {
+                               _searchResults=[];
+                                
+                              });
+                              _goToStation(37.43496133580664,-122.090749655962);
+                              },
+                            child: ListTile(
+                              title: Text(_searchResults[
+                                  index]), // Adjust based on your data structure
+                              // subtitle: Text(station['location']), // Optional
+                            ),
+                          );
+                        },
+                      ),
+                    )
+                  : Center(child: Text('No results found',style: TextStyle(color: Colors.transparent),)),
+            ),
+          ),
+        ),
+        Positioned(
             bottom: 10,
             left: MediaQuery.of(context).size.width * 0.35,
             child: ElevatedButton(
@@ -238,6 +286,17 @@ class _MainScreenViewState extends State<MainScreenView> {
     );
   }
 
+  void _goToStation(double latitude, double longitude) async {
+  final GoogleMapController? mapController = await _controller.future;
+  mapController?.animateCamera(CameraUpdate.newCameraPosition(
+    CameraPosition(
+      target: LatLng(latitude, longitude),
+      zoom: 14.0, // Adjust zoom level as necessary
+    ),
+  ));
+}
+
+
   showNearStations(BuildContext ctx) {
     _scaffoldKey.currentState?.showBottomSheet(
       enableDrag: true,
@@ -251,8 +310,9 @@ class _MainScreenViewState extends State<MainScreenView> {
                 stationss.length, // Increase the number of items in the list
             itemBuilder: (BuildContext ctx, int index) {
               return GestureDetector(
-                onTap: (){
-                  Navigator.pushNamed(context, TestAvailableChargers.routeName,arguments:{"ID":stationss[index]["ID"]});
+                onTap: () {
+                  Navigator.pushNamed(context, TestAvailableChargers.routeName,
+                      arguments: {"ID": stationss[index]["ID"]});
                 },
                 child: Card(
                   child: ListTile(
@@ -263,7 +323,8 @@ class _MainScreenViewState extends State<MainScreenView> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Icon(Icons.power, size: 20),
-                        Text('${stationss[index]["chargers"][0]["PowerKW"]} kW'),
+                        Text(
+                            '${stationss[index]["chargers"][0]["PowerKW"]} kW'),
                         Text("${stationss[index]["chargers"].length}",
                             style: TextStyle(color: Colors.grey)),
                       ],
