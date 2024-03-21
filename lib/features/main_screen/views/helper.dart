@@ -17,6 +17,7 @@ class MainScreenHelper{
   } catch (e) {
     print(e);
     throw Exception('Failed to load data');
+    
   }
 }
 

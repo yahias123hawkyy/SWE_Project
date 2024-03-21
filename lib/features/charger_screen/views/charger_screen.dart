@@ -17,7 +17,7 @@ class ChargerScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: MainColors.backgroundColor,
-      appBar: ApplicationBar.appbar(args["charger_name"],
+      appBar: ApplicationBar.appbar(args["args"]["ID"],
           Icon(Icons.arrow_back), () => Navigator.pop(context)),
       body: Container(
         alignment: Alignment.center,
@@ -54,8 +54,9 @@ class ChargerScreen extends StatelessWidget {
                             style: testStyleHandler(context, mediaQuery),
                           ),
                           Text(
-                            args["list"][0].energy.toString() +" kwt",
-                            style: testStyleHandler(context, mediaQuery),
+                            "ff"
+                            // args["list"][0].energy.toString() +" kwt",
+                            ,style: testStyleHandler(context, mediaQuery),
                           )
                         ]),
                     const Divider(
@@ -72,8 +73,8 @@ class ChargerScreen extends StatelessWidget {
                             "Time",
                             style: testStyleHandler(context, mediaQuery),
                           ),
-                          Text(
-                            args["list"][0].time.toString().substring(17, 22),
+                          Text("aaa",
+                            // args["list"][0].time.toString().substring(17, 22),
                             style: testStyleHandler(context, mediaQuery),
                           )
                         ]),
@@ -92,7 +93,7 @@ class ChargerScreen extends StatelessWidget {
                             style: testStyleHandler(context, mediaQuery),
                           ),
                           Text(
-                            args["list"][0].costpertime.toString() + "\$",
+                            args["args"]["Price"].toString() + "\$",
                             style: testStyleHandler(context, mediaQuery),
                           )
                         ]),
@@ -110,8 +111,8 @@ class ChargerScreen extends StatelessWidget {
                             "Battery",
                             style: testStyleHandler(context, mediaQuery),
                           ),
-                          Text(
-                            args["list"][0].battery.toString() +"%",
+                          Text("ssss",
+                            // args["list"][0].battery.toString() +"%",
                             style: testStyleHandler(context, mediaQuery),
                           )
                         ]),
