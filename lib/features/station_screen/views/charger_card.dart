@@ -2,12 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:iparkmobileapplication/features/charger_screen/models/charger.dart';
 import 'package:iparkmobileapplication/features/charger_screen/views/charger_screen.dart';
-import 'package:iparkmobileapplication/utils/themes/app_colors.dart';
 
 class ChargerCard extends StatelessWidget {
 
 
-  final chargerName;
+  final String chargerName;
   final status;
   final costPerUnit;
   final id;
@@ -46,13 +45,13 @@ class ChargerCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
+                  height: mediaQuery.height*0.15,
+                  width: mediaQuery.width*0.25,
                   child: SvgPicture.asset(
                     "assets/images/electricity-svgrepo-com.svg",
                     colorFilter: ColorFilter.mode( 
                        flashColor, BlendMode.srcIn),
                   ),
-                  height: mediaQuery.height*0.15,
-                  width: mediaQuery.width*0.25,
                 ),
                 Container(
                   margin: EdgeInsets.symmetric(horizontal: 12, vertical: 12),

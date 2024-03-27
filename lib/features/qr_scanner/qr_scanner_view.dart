@@ -3,6 +3,7 @@ import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 
 
+// ignore: use_key_in_widget_constructors
 class QRCodeScannerScreen extends StatefulWidget {
   
   static const String nameRoute= "qr_scanner_screen";
@@ -21,8 +22,8 @@ class _QRCodeScannerScreenState extends State<QRCodeScannerScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('QR Code Scanner'),
-        leading: IconButton(onPressed:()=>Navigator.of(context).pop(),icon: Icon(Icons.arrow_back)),
+        title: const Text('QR Code Scanner'),
+        leading: IconButton(onPressed:()=>Navigator.of(context).pop(),icon: const Icon(Icons.arrow_back)),
         
       ),
       body: QRView(
@@ -37,27 +38,23 @@ class _QRCodeScannerScreenState extends State<QRCodeScannerScreen> {
       _qrController = controller;
     });
 
-    // Set up a callback for when the QR code is detected
-    _qrController.scannedDataStream.listen((scanData) {
-      // Process the scanned data (e.g., show it in a dialog)
-      showDialog(
+    _qrController.scannedDataStream.listen((scanData) => showDialog(
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: Text('QR Code Scanned'),
+            title: const Text('QR Code Scanned'),
             content: Text('Data: $scanData'),
             actions: [
               TextButton(
                 onPressed: () {
                   Navigator.pop(context);
                 },
-                child: Text('OK'),
+                child: const Text('OK'),
               ),
             ],
           );
         },
-      );
-    });
+      ));
   }
 
   @override

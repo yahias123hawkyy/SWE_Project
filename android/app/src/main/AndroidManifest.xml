@@ -1,6 +1,25 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
-<uses-permission android:name="android.permission.INTERNET" />
+<uses-permission android:name="android.permission.CAMERA" />
+<uses-permission android:name="android.permission.INTERNET"/>
+<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+<uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+
+
+
+  <queries>
+        <!-- Example: If your app needs to discover specific apps by their package name -->
+        <package android:name="com.example.someapp" />
+        
+        <!-- Example: If your app needs to discover apps that can respond to a specific intent -->
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:scheme="https" />
+        </intent>
+        
+        <!-- You can declare more package names, intents, etc., within <queries> -->
+    </queries>
 
     <application
         android:label="iparkmobileapplication"

@@ -11,7 +11,7 @@ class OnboardingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(16.0),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -19,20 +19,20 @@ class OnboardingPage extends StatelessWidget {
             imageUrl,
             height: MediaQuery.of(context).size.height * 0.3,
           ),
-          SizedBox(height: 30.0),
+          const SizedBox(height: 30.0),
           Text(
             title,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 24.0,
               fontFamily: "Inter",
               fontWeight: FontWeight.bold,
             ),
           ),
-          SizedBox(height: 10.0),
+          const SizedBox(height: 10.0),
           Text(
             description,
             textAlign: TextAlign.center,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 16.0,
               color: Color(0xFFA6A6A6)
             ),

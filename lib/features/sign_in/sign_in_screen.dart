@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:iparkmobileapplication/common/widgets/app_bar.dart';
 import 'package:iparkmobileapplication/features/main_screen/views/main_screen.dart';
 import 'package:iparkmobileapplication/features/payment_history_screen/views/payment_card.dart';
@@ -19,7 +20,7 @@ class SignInScreen extends StatefulWidget {
 
 class _SignInScreenState extends State<SignInScreen> {
   final _formKey = GlobalKey<FormState>();
-  String _email = '';
+  String username = '';
   String _password = '';
 
   @override
@@ -27,7 +28,7 @@ class _SignInScreenState extends State<SignInScreen> {
     final Size screenSize = MediaQuery.of(context).size;
 
     return Scaffold(
-      appBar: ApplicationBar.appbar("", Icon(null), null),
+      appBar: ApplicationBar.appbar("", const Icon(null), null),
       body: SingleChildScrollView(
         child: Container(
           // height: screenSize.height *0.6,
@@ -36,14 +37,17 @@ class _SignInScreenState extends State<SignInScreen> {
           child: Column(
             // crossAxisAlignment: CrossAxisAlignment.stre,
             children: [
-              Text(
+              const Text(
                 "Sign In",
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
+                style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 30),
               ),
               SizedBox(
                 height: screenSize.height * 0.05,
               ),
-              Text("Enter your Email and Password "),
+              const Text("Enter your username and Password "),
               SizedBox(
                 height: screenSize.height * 0.05,
               ),
@@ -54,26 +58,54 @@ class _SignInScreenState extends State<SignInScreen> {
                       TextFormField(
                           onChanged: (value) {
                             setState(() {
-                              _email = value;
+                              username = value;
                             });
                           },
-                          validator: (value) => Helper.returnMessage(value),
-                          decoration:
-                              FormStyles.formStyle.copyWith(labelText: "Email")),
-                      SizedBox(height: screenSize.height*0.02),
+                          validator: (value) {
+                            if (value == null || value.length < 5) {
+                              return 'Please enter a username';
+                            }
+                            return null;
+                          },
+                          decoration: FormStyles.formStyle
+                              .copyWith(labelText: "username")),
+                      SizedBox(height: screenSize.height * 0.02),
                       TextFormField(
                           onChanged: (value) {
                             setState(() {
-                             _password = value;
+                              _password = value;
                             });
                           },
-                          validator: (value) => Helper.validatePassword(value),
+                          validator: (value) {
+                            if (value == null || value.length < 8) {
+                              return 'Please enter a password';
+                            }
+                            return null;
+                          },
                           obscureText: true,
                           decoration: FormStyles.formStylePassword),
                       SizedBox(height: screenSize.height * 0.05),
                       ElevatedButton(
-                        onPressed: ()=>Helper.validateOnClick(_formKey,context),
-                        child: Text("Sign In",
+                        onPressed: () async {
+                          if (_formKey.currentState!.validate()) {
+                            final auth = AuthenticationService();
+                            bool success =
+                                await auth.signIn(username, _password);
+
+                            if (success) {
+                              Navigator.pushNamed(
+                                  context, MainScreenView.routeName);
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                // ignore: prefer_const_constructors
+                                SnackBar(
+                                    content: const Text(
+                                        ' sorry there was an error doing this operation')),
+                              );
+                            }
+                          }
+                        },
+                        child: const Text("Sign In",
                             style:
                                 TextStyle(color: Colors.white, fontSize: 20)),
                         style: buttons.signInELevatedButtonstyle(context),
@@ -85,74 +117,81 @@ class _SignInScreenState extends State<SignInScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text("Don'y have an account yet?"),
-                  Container(
-                      child: TextButton(
-                          style: ButtonStyle(
-                            backgroundColor: null,
-                          ),
-                          onPressed: () => Navigator.pushNamed(
-                              context, SignUpScren.nameRoute),
-                          child: Text(
-                            "Sign Up now",
-                            style: TextStyle(
-                                color: MainColors.mainLightThemeColor),
-                          ))),
+                  const Text(
+                    "Don't have an account yet?",
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 15),
+                  ),
+                  Expanded(
+                    child: TextButton(
+                        style: const ButtonStyle(
+                          backgroundColor: null,
+                        ),
+                        onPressed: () =>
+                            Navigator.pushNamed(context, SignUpScren.nameRoute),
+                        child: Text(
+                          "Sign Up now",
+                          style:
+                              TextStyle(color: MainColors.mainLightThemeColor),
+                        )),
+                  ),
                 ],
               ),
 
               // SizedBox(width: 16.0),
 
-              Text(
+              const Text(
                 "You can also sign in with:",
                 style: TextStyle(fontSize: 14),
               ),
               SizedBox(height: screenSize.height * 0.05),
 
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Expanded(
-                      child: InkWell(
-                    onTap: () {
-                      // Handle the click action here
-                      print('Image Clicked!');
-                    },
-                    child: Image.asset(
-                      'assets/images/google.png',
-                      width: screenSize.width * 0.02, // Set the desired width
-                      height: screenSize.height * 0.06,
-                      fit: BoxFit.contain, // Set the desired height
-                    ),
-                  )),
-                  Expanded(
-                      child: InkWell(
-                    onTap: () {
-                      // Handle the click action here
-                      print('Image Clicked!');
-                    },
-                    child: Image.asset(
-                      'assets/images/fb.png',
-                      width: screenSize.width * 0.01, // Set the desired width
-                      height: screenSize.height * 0.06,
-                      fit: BoxFit.contain, // Set the desired height
-                    ),
-                  )),
-                  Expanded(
-                      child: InkWell(
-                    onTap: () {
-                      // Handle the click action here
-                      print('Image Clicked!');
-                    },
-                    child: Image.asset(
-                      'assets/images/google.png',
-                      width: screenSize.width * 0.02, // Set the desired width
-                      height: screenSize.height * 0.06,
-                      fit: BoxFit.contain, // Set the desired height
-                    ),
-                  )),
-                ],
-              )
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.spaceAround,
+              //   children: [
+              //     Expanded(
+              //         child: InkWell(
+              //       onTap: () {
+              //         // Handle the click action here
+              //         print('Image Clicked!');
+              //       },
+              //       child: Image.asset(
+              //         'assets/images/google.png',
+              //         width: screenSize.width * 0.02, // Set the desired width
+              //         height: screenSize.height * 0.06,
+              //         fit: BoxFit.contain, // Set the desired height
+              //       ),
+              //     )),
+              //     Expanded(
+              //         child: InkWell(
+              //       onTap: () {
+              //         // Handle the click action here
+              //         print('Image Clicked!');
+              //       },
+              //       child: Image.asset(
+              //         'assets/images/fb.png',
+              //         width: screenSize.width * 0.01, // Set the desired width
+              //         height: screenSize.height * 0.06,
+              //         fit: BoxFit.contain, // Set the desired height
+              //       ),
+              //     )),
+              //     Expanded(
+              //         child: InkWell(
+              //       onTap: () {
+              //         // Handle the click action here
+              //         print('Image Clicked!');
+              //       },
+              //       child: Image.asset(
+              //         'assets/images/google.png',
+              //         width: screenSize.width * 0.02, // Set the desired width
+              //         height: screenSize.height * 0.06,
+              //         fit: BoxFit.contain, // Set the desired height
+              //       ),
+              //     )),
+              //   ],
+              // )
             ],
           ),
         ),
@@ -160,5 +199,3 @@ class _SignInScreenState extends State<SignInScreen> {
     );
   }
 }
-
-

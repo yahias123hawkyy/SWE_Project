@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:iparkmobileapplication/features/available_chargers/views/available_charger.dart';
+import 'package:iparkmobileapplication/features/station_screen/views/available_chargers.dart';
 import 'package:iparkmobileapplication/features/main_screen/views/main_screen.dart';
-import 'package:iparkmobileapplication/features/main_screen/views/notifications_page.dart';
 import 'package:iparkmobileapplication/features/profile_tab_screen/views/profile_screen.dart';
 import 'package:iparkmobileapplication/features/qr_scanner/qr_scanner_view.dart';
 
@@ -38,7 +37,7 @@ BottomNavigationBarItem navBarItem(String label, Icon icon) {
           Navigator.pushNamed(context,MainScreenView.routeName);
         } 
         if (value == 1){
-          Navigator.pushNamed(context,NotificationScreen.routeName);
+          // Navigator.pushNamed(context,.routeName);
         }  
         if (value == 2){
           Navigator.pushNamed(context,QRCodeScannerScreen.nameRoute);

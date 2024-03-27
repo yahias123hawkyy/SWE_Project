@@ -5,10 +5,11 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/utils.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:iparkmobileapplication/features/available_chargers/views/test_available_chargers.dart';
-import 'package:iparkmobileapplication/features/main_screen/views/helper.dart';
+import 'package:iparkmobileapplication/features/station_screen/views/station_screen.dart';
+import 'package:iparkmobileapplication/features/main_screen/providers/helper.dart';
 import 'package:iparkmobileapplication/features/main_screen/views/navbar_item.dart';
 import 'package:iparkmobileapplication/utils/themes/app_colors.dart';
 import 'package:get/get.dart';
@@ -25,7 +26,9 @@ class MainScreenView extends StatefulWidget {
 class _MainScreenViewState extends State<MainScreenView> {
   Completer<GoogleMapController> _controller = Completer();
 
-  final LatLng _userLocation = const LatLng(45.592775, 9.294368);
+  late LatLng _userLocation;
+
+  late Future<String> wrapperFuture;
 
   Set<Marker> _markers = {};
   Timer? _timer;
@@ -33,17 +36,18 @@ class _MainScreenViewState extends State<MainScreenView> {
 
   List stationss = [];
 
-  var readOnly= false;
+  var readOnly = false;
 
-  void mapMarkerToStation() async {
-    MainScreenHelper helper = MainScreenHelper();
-    List<dynamic> stations = await helper
-        .fetchApiData("http://10.0.2.2:3000/api/stations/available");
-
+  Future<void> mapMarkerToStation(Map<String, num> map) async {
+    List<dynamic> stations = await MainScreenHelper.recieveStations(
+        "http://10.0.2.2:3000/api/stations/stations", map);
+    print(stations);
     for (int i = 0; i < stations.length; i++) {
       stationss.add(stations[i]);
       setState(() {
         _markers.add(Marker(
+            onTap: () => Navigator.pushNamed(context, StationScreen.routeName,
+                arguments: {"ID": stations[i]["ID"]}),
             markerId: MarkerId(stations[i]["ID"]),
             infoWindow: InfoWindow(title: "Station ${stations[i]["title"]}"),
             position: LatLng(double.parse(stations[i]["locationLat"]),
@@ -53,12 +57,55 @@ class _MainScreenViewState extends State<MainScreenView> {
   }
 
   List<dynamic> _searchResults = [];
+  Future<Position> _getCurrentLocation() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      return Future.error('Location services are disabled.');
+    }
+
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        return Future.error('Location permissions are denied');
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      return Future.error(
+          'Location permissions are permanently denied, we cannot request permissions.');
+    }
+
+    Position position = await Geolocator.getCurrentPosition();
+    setState(() {
+      _userLocation = LatLng(position.latitude, position.longitude);
+      //   currentCenter = position;
+      //   markers.add(Marker(
+      //       point: LatLng(userLocation!.latitude, userLocation!.longitude),
+      //       child: Hero(tag: 1, child: Image.asset("assets/images/qq.png")),
+      //       width: 200,
+      //       height: 200));
+    });
+
+    setState(() {
+      _markers.add(Marker(
+        markerId: MarkerId("a"),
+        position: LatLng(
+          position.latitude,
+          position.longitude,
+        ),
+      ));
+    });
+
+    return position;
+  }
 
   void _onSearchChanged(String query) async {
-    MainScreenHelper helper = MainScreenHelper();
-
     if (query.isNotEmpty) {
-      final results = await helper.fetchStations(query);
+      final results = await MainScreenHelper.fetchStations(query);
       setState(() {
         _searchResults = results;
       });
@@ -72,7 +119,21 @@ class _MainScreenViewState extends State<MainScreenView> {
   @override
   void initState() {
     super.initState();
-    mapMarkerToStation();
+
+    wrapperFuture = wrapper();
+  }
+
+  Future<String> wrapper() async {
+    Position position = await _getCurrentLocation();
+    Map<String, num> latlong = {
+      "lat": position.latitude,
+      "long": position.longitude
+    };
+    print(latlong);
+
+    await mapMarkerToStation(latlong);
+
+    return "true";
   }
 
   void _onMapCreated(GoogleMapController controller) {
@@ -85,25 +146,37 @@ class _MainScreenViewState extends State<MainScreenView> {
     super.dispose();
   }
 
-  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+    var textFieldController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     final Size _page_size = MediaQuery.of(context).size;
 
-    var textFieldController = TextEditingController();
     return Scaffold(
       key: _scaffoldKey,
       bottomNavigationBar: BottomNavBar(),
       backgroundColor: MainColors.backgroundColor,
       body: Stack(children: [
-        GoogleMap(
-          mapType: MapType.hybrid,
-          initialCameraPosition:
-              CameraPosition(target: _userLocation, zoom: 20.0),
-          onMapCreated: _onMapCreated,
-          markers: _markers,
-          // polylines: _polylines,
+        FutureBuilder<String>(
+          future: wrapperFuture,
+          builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              return GoogleMap(
+                mapType: MapType.satellite,
+                initialCameraPosition: CameraPosition(
+                  target: _userLocation,
+                  zoom: 14.0,
+                ),
+                onMapCreated: _onMapCreated,
+                markers: _markers,
+              );
+            } else if (snapshot.hasError) {
+              return const Center(child: const Text('Error fetching map data'));
+            } else {
+              return const Center(child: CircularProgressIndicator());
+            }
+          },
         ),
         Positioned(
           child: SafeArea(
@@ -120,6 +193,7 @@ class _MainScreenViewState extends State<MainScreenView> {
                         controller: textFieldController,
                         readOnly: readOnly,
                         decoration: InputDecoration(
+                        
                             focusedBorder: InputBorder.none,
                             enabledBorder: InputBorder.none,
                             fillColor: Colors.white,
@@ -164,8 +238,8 @@ class _MainScreenViewState extends State<MainScreenView> {
                                 _goToStation(
                                     double.parse(_searchResults[index][1][0]),
                                     double.parse(_searchResults[index][1][1]));
-                                textFieldController.text="";
-                                readOnly= true;
+                                textFieldController.text = "";
+                                readOnly = true;
                                 _searchResults = [];
                               });
                             },
@@ -178,7 +252,7 @@ class _MainScreenViewState extends State<MainScreenView> {
                         },
                       ),
                     )
-                  : Center(
+                  : const Center(
                       child: Text(
                       'No results found',
                       style: TextStyle(color: Colors.transparent),
@@ -213,59 +287,103 @@ class _MainScreenViewState extends State<MainScreenView> {
     ));
   }
 
+  double responsiveValue(BuildContext context, double value,
+      {Axis axis = Axis.vertical}) {
+    final Size screenSize = MediaQuery.of(context).size;
+    final double baseHeight = 800.0;
+    final double baseWidth = 400.0;
+
+    return value *
+        (axis == Axis.vertical
+            ? screenSize.height / baseHeight
+            : screenSize.width / baseWidth);
+  }
+
   showNearStations(BuildContext ctx) {
     _scaffoldKey.currentState?.showBottomSheet(
       enableDrag: true,
       showDragHandle: true,
       (BuildContext ctx) {
-        return Container(
-          color: MainColors.backgroundColor,
-          child: FractionallySizedBox(
-            heightFactor:
-                0.8, // Adjust the height factor as needed, up to 1 for full screen
-            child: ListView.builder(
-              itemCount:
-                  stationss.length, // Increase the number of items in the list
-              itemBuilder: (BuildContext ctx, int index) {
-                return GestureDetector(
-                  onTap: () {
-                    Navigator.pushNamed(
-                        context, TestAvailableChargers.routeName,
-                        arguments: {"ID": stationss[index]["ID"]});
-                  },
-                  child: Card(
-                    margin: EdgeInsets.all(
-                        MediaQuery.of(context).size.height * 0.02),
-                    child: Padding(
-                      padding: EdgeInsets.all(
-                          MediaQuery.of(context).size.height * 0.02),
-                      child: ListTile(
-                        subtitle: Text(stationss[index]["addressLine1"],
-                            style: TextStyle(fontSize: 15)),
-                        trailing: const Text(
-                          '60 m',
-                          style: TextStyle(fontSize: 17),
-                        ),
-                        title: Text(stationss[index]["title"]),
-                        leading: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Icon(
-                                color: MainColors.mainLightThemeColor,
-                                Icons.power_outlined,
-                                size: 40),
-                            Text("x${stationss[index]["chargers"].length}",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black)),
-                          ],
-                        ),
-                        // onTap: () {},
-                      ),
+        return FractionallySizedBox(
+          heightFactor: 0.5,
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: EdgeInsets.symmetric(
+                    vertical: responsiveValue(ctx, 5), // Adjusted
+                    horizontal: responsiveValue(ctx, 10), // Adjusted
+                  ),
+                  child: Text(
+                    "Near Stations",
+                    style: TextStyle(
+                      color: MainColors.mainLightThemeColor,
+                      fontSize: responsiveValue(ctx, 18,
+                          axis: Axis.horizontal), // Adjusted
                     ),
                   ),
-                );
-              },
+                ),
+                Container(
+                  height: MediaQuery.of(ctx).size.height *
+                      0.37, // Consider adjusting this as well
+                  color: MainColors.backgroundColor,
+                  child: ListView.builder(
+                    itemCount: stationss.length, // Ensure 'stations' is correct
+                    itemBuilder: (BuildContext ctx, int index) {
+                      return GestureDetector(
+                        onTap: () {
+                          Navigator.pushNamed(ctx, StationScreen.routeName,
+                              arguments: {"ID": stationss[index]["ID"]});
+                        },
+                        child: Card(
+                          margin: EdgeInsets.all(
+                            responsiveValue(ctx, 8), // Adjusted
+                          ),
+                          child: Padding(
+                            padding: EdgeInsets.all(
+                              responsiveValue(ctx, 8), // Adjusted
+                            ),
+                            child: ListTile(
+                              subtitle: Text(
+                                stationss[index]["addressLine1"],
+                                style: TextStyle(
+                                  fontSize: responsiveValue(ctx, 15,
+                                      axis: Axis.horizontal), // Adjusted
+                                ),
+                              ),
+                              trailing: Text(
+                                '${(index + 1 * 10.1).toString().substring(0, 2)}m',
+                                style: TextStyle(
+                                  fontSize: responsiveValue(ctx, 17,
+                                      axis: Axis.horizontal), // Adjusted
+                                ),
+                              ),
+                              title: Text(stationss[index]["title"]),
+                              leading: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  Icon(
+                                      color: MainColors.mainLightThemeColor,
+                                      Icons.power_outlined,
+                                      size: 40),
+                                  Text(
+                                      "x${stationss[index]["chargers"].length}",
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black)),
+                                ],
+                              ),
+                              // onTap: () {},
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ],
             ),
           ),
         );

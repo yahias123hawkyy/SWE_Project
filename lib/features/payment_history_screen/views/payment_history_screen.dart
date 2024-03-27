@@ -1,26 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:iparkmobileapplication/common/widgets/app_bar.dart';
+import 'package:iparkmobileapplication/features/main_screen/views/main_screen.dart';
 import 'package:iparkmobileapplication/features/payment_history_screen/views/payment_card.dart';
 
 class PaymentHistoryScreen extends StatelessWidget {
   const PaymentHistoryScreen({super.key});
 
+  static const String nameRoute = "payment_history_screen";
 
-  static const String nameRoute= "payment_history_screen";
-  
-   @override
+  @override
   Widget build(BuildContext context) {
-
-    final args = ModalRoute.of(context)!.settings.arguments as Map;
+    // final args = ModalRoute.of(context)!.settings.arguments as Map;
 
     return Scaffold(
-      appBar: ApplicationBar.appbar(args["title"], Icon(Icons.arrow_back), ()=>Navigator.pop(context)),
+      appBar: ApplicationBar.appbar("Payment History", Icon(Icons.arrow_back),
+          () => Navigator.pushNamed(context,MainScreenView.routeName)),
       body: ListView(children: [
-        PaymentCard(cost: 30, datatime: DateTime.now(), placeTitle: "USA" ),
-        PaymentCard(cost: 30, datatime: DateTime.now(), placeTitle: "USA" ),
-        PaymentCard(cost: 30, datatime: DateTime.now(), placeTitle: "USA" ),
+        PaymentCard(cost: 30, datatime: DateTime.now(), placeTitle: "USA"),
+        PaymentCard(cost: 30, datatime: DateTime.now(), placeTitle: "USA"),
+        PaymentCard(cost: 30, datatime: DateTime.now(), placeTitle: "USA"),
       ]),
-        
     );
   }
 }
