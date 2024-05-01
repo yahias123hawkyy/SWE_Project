@@ -7,7 +7,7 @@
     static List<OnboardingPage> pages = [
   OnboardingPage(
     title: 'Welcome to Ipark',
-    description: 'This is a sample onboarding screen for Flutter.',
+    description: 'the world smartest EV charging application that aim to make a revolution in the EV Charging industry',
     imageUrl: 'assets/images/income_1.png',
   ),
   OnboardingPage(

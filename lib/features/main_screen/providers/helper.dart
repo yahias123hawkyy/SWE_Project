@@ -1,8 +1,7 @@
 import 'package:dio/dio.dart';
+import 'package:iparkmobileapplication/features/station/models/station_model.dart';
 
 abstract class MainScreenHelper {
-
-  
   static Future<List<dynamic>> fetchApiData(String url) async {
     Dio dio = Dio();
 
@@ -21,9 +20,11 @@ abstract class MainScreenHelper {
     }
   }
 
-  static Future<List> recieveStations(
+  static Future<List<Station>> recieveStations(
       String url, Map<dynamic, dynamic> latlong) async {
     Dio dio = Dio();
+    List<Station> stations;
+
     try {
       final response = await dio.post(
         url,
@@ -34,7 +35,16 @@ abstract class MainScreenHelper {
           },
         ),
       );
-      return response.data;
+      print("hey from recieve station furnctui");
+      print(response.data);
+
+      final List<dynamic> json = response.data;
+
+      stations = json.map((station) => Station.fromJson(station)).toList();
+
+      print(stations);
+
+      return stations;
     } on DioException catch (e) {
       if (e.response != null) {
         throw Exception('Dio error with response: ${e.response.toString()}');
@@ -44,12 +54,23 @@ abstract class MainScreenHelper {
     }
   }
 
-  static Future<List<dynamic>> fetchStations(String query) async {
+  static Future<dynamic> fetchStations(String query) async {
     Dio dio = Dio();
+    List<Station> stations;
 
     try {
       final response = await dio.get('http://10.0.2.2:3000/api/stations/search',
           queryParameters: {'q': query});
+
+      // final List<dynamic> json = response.data;
+      // print(response.data);
+
+      // stations = json.map((station) => Station.fromJson(station)).toList();
+
+      // print(stations);
+      // print("fkhsdjfhsdjfhkkhjkdsfhjksdhfjksdhfjk");
+      print(response.data);
+
       return response.data;
     } catch (e) {
       return [];

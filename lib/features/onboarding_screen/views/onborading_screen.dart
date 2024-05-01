@@ -3,8 +3,8 @@ import 'package:iparkmobileapplication/common/widgets/app_bar.dart';
 import 'package:iparkmobileapplication/features/main_screen/views/main_screen.dart';
 import 'package:iparkmobileapplication/features/onboarding_screen/models/onBorading_model.dart';
 import 'package:iparkmobileapplication/features/onboarding_screen/views/eachonboardingScreen.dart';
-import 'package:iparkmobileapplication/features/sign_in/sign_in_screen.dart';
-import 'package:iparkmobileapplication/features/sign_in/sign_up_screen.dart';
+import 'package:iparkmobileapplication/features/auth/views/sign_in_screen.dart';
+import 'package:iparkmobileapplication/features/auth/views/sign_up_screen.dart';
 
 class OnBoardingScreen extends StatelessWidget {
   static const String nameRoute = "onBoarding_screen";
